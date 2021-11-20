@@ -47,12 +47,13 @@ class RecursiveForecaster():
             indx = str(step)#[:-9]
             #print(indx)
             X_pred = pd.DataFrame(self.x.loc[indx]).T
-            #print(indx)
+            #print(X_pred)
             x_index = self.x.loc[indx].name
+            #print(pred_df.loc[x_index])
             pred_df.loc[x_index] = model_name.predict(X_pred)
             
             #update features with lags containing lags of predicted value 
             for i in self.lags:
                 self.x.loc[indx,'lag_'+str(i)] = pred_df.shift(i)
 
-        return #pred_df
+        return pred_df
