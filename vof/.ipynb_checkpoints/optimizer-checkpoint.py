@@ -19,10 +19,8 @@ class OptimalDecisionMakers():
                                    time_unit = 'H',
                                    random_seed=42,
                                    return_predictions=False):
-        
-        import random
-        
-        #random.seed(random_seed)
+                
+        random.seed(random_seed)
         self.cost_function = cost_function
         self.optimal_decisions_df = pd.DataFrame(index=(self.x.index),columns=self.x.columns).iloc[:-optimization_horizon]
 

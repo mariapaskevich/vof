@@ -1,6 +1,7 @@
-import pandas as pd 
+import pandas as pd
 
-class RecursiveForecaster():
+
+class RecursiveForecaster(): 
     
     def __init__(self, data, target):
         self.x = data.drop(target, axis=1)
