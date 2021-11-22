@@ -28,7 +28,9 @@ class RecursiveForecaster():
         
         print(model_name)
         
-        X_train = self.x.loc[start_day:last_known_day]
+        self.x_modified = self.x.copy()
+        
+        X_train = self.x_modified.loc[start_day:last_known_day]
         y_train = self.y.loc[start_day:last_known_day]
         
         
@@ -47,14 +49,14 @@ class RecursiveForecaster():
         for step in pred_index:
             indx = str(step)#[:-9]
             #print(indx)
-            X_pred = pd.DataFrame(self.x.loc[indx]).T
+            X_pred = pd.DataFrame(self.x_modified.loc[indx]).T
             #print(X_pred)
-            x_index = self.x.loc[indx].name
+            x_index = self.x_modified.loc[indx].name
             #print(pred_df.loc[x_index])
             pred_df.loc[x_index] = model_name.predict(X_pred)
             
             #update features with lags containing lags of predicted value 
             for i in self.lags:
-                self.x.loc[indx,'lag_'+str(i)] = pred_df.shift(i)
+                self.x_modified.loc[indx,'lag_'+str(i)] = pred_df.shift(i)
 
         return pred_df
