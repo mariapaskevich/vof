@@ -1,5 +1,6 @@
 import pandas as pd
-
+import datetime
+from pycaret.internal.pycaret_experiment import TimeSeriesExperiment
 
 class RecursiveForecaster(): 
     
@@ -94,10 +95,17 @@ class RecursiveForecaster():
         start_days = pd.date_range(start=start_day, periods=len(pred_days), freq='D')
 
         last_known_days = pd.date_range(start=last_known_day, periods=len(pred_days), freq='D')
-
-        forecast_for_days = pd.DataFrame(index=self.x.loc[prediction_day:].index)
-
         
+        if freq == 'D':
+            end_of_prediction = str(datetime.datetime.strptime(terminal_day, '%Y-%m-%d') + datetime.timedelta(days=h))
+        elif freq == 'H':
+            end_of_prediction = str(datetime.datetime.strptime(terminal_day, '%Y-%m-%d') + datetime.timedelta(hours=h))
+        
+        #print(end_of_prediction)
+        #print(pd.date_range(start=start_day, end=last_known_day, freq=freq))
+        forecast_for_days = pd.DataFrame(index=pd.date_range(start=prediction_day, end=end_of_prediction, freq=freq))
+        #print(forecast_for_days)
+
         for (pd_day,st_day,lk_day) in zip(pred_days,start_days,last_known_days):
             
             #print(pd_day,st_day,lk_day)
@@ -111,3 +119,19 @@ class RecursiveForecaster():
             forecast_for_days[pd_day] = res
 
         return forecast_for_days
+    
+    
+    def create_pycaret_prediction(start_day='2019-01-02', 
+                                      last_known_day='2019-12-01', 
+                                      prediction_day='2019-12-02',
+                                      terminal_day='2019-12-17',
+                                      freq='D',
+                                      h=10):
+    
+        exp = TimeSeriesExperiment()
+        exp.setup(data, fh = 7, fold = 3, session_id = 123)
+        best = exp.compare_models()
+        
+        
+    
+        return
