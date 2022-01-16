@@ -7,9 +7,9 @@ import nevergrad as ng
 
 class OptimalDecisionMakers(): 
     
-    def __init__(self, data, target):
-        self.x = data#.drop([target], axis=1)
-        self.y = data[target]
+    def __init__(self, data,target):
+        self.data = data#.drop([target], axis=1)
+        #self.y = data[target]
     
     def select_value_optimal_model(self,
                                    optimizer,
@@ -22,11 +22,11 @@ class OptimalDecisionMakers():
                 
         random.seed(random_seed)
         self.cost_function = cost_function
-        self.optimal_decisions_df = pd.DataFrame(index=(self.x.index),columns=self.x.columns).iloc[:-optimization_horizon]
+        self.optimal_decisions_df = pd.DataFrame(index=(self.data.index),columns=self.data.columns).iloc[:-optimization_horizon]
 
         for col in range(len(self.optimal_decisions_df.columns)):
 
-            total_steps = range(0,len(self.x)-optimization_horizon,decision_time_step)
+            total_steps = range(0,len(self.data)-optimization_horizon,decision_time_step)
             recommendation = np.array([])
 
             for step in total_steps:
@@ -35,10 +35,10 @@ class OptimalDecisionMakers():
                 optimizer = ng.optimizers.CMA(parametrization=par, budget=5000)
                 
                 try:
-                    self.candidate = self.x.iloc[step:step+optimization_horizon,col]
+                    self.candidate = self.data.iloc[step:step+optimization_horizon,col]
                 except:
                     print(self.optimal_decisions_df.shape)
-                    print(self.x.iloc[step:step+optimization_horizon,col])
+                    print(self.data.iloc[step:step+optimization_horizon,col])
                     
                 step_recommendation = optimizer.minimize(cost_function)
                 recommendation = np.append(recommendation,step_recommendation.value[0:decision_time_step])
