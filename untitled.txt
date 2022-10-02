@@ -1,0 +1,16 @@
+Part 1. the research
+
+Part 2. the package
+
+The package needs to be refactored: 
+
+- Add logic for feature extraction 
+        - lags and automated picking of relevant lags
+- Forecast:
+        #this one works to some extend, but doesnt provide evaluation in the package
+        - add evaluation methods
+- Optimization: 
+        #currently almost doesn't exist. we need to have some kind of a baseline optimizer
+        - add implementations for PILP and Nevergrad
+        - add evaluation methods
+        

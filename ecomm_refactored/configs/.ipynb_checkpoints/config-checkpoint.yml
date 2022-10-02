@@ -1,0 +1,14 @@
+preprocessing: 
+  scale_features: false
+  fill_missing: true
+  test_split: 0.3 #proportion for the train/test split
+
+feature_selection: 
+  class: FeatureSelectorANOVA 
+  value: 9 #critical value for correlation (abs value, float from 0 to 1) or number of features for ANOVA (number of features, int)
+  
+model:
+  class: XGBModel
+  cv_splits: 3
+  hyperparameters: {'learning_rate': 0.1, 'max_depth': 6, 'n_estimators': 200}
+seed: 42
